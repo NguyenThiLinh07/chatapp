@@ -3,6 +3,10 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import { FcGoogle } from 'react-icons/fc';
 import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth';
 import { firebaseAuth } from '@/utils/FirebaseConfig';
+import { authApi } from '@/api/authApi';
+import { useRouter } from 'next/navigation';
+import { useStateProvider } from '@/context/StateContext';
+import { reducerCases } from '@/context/constants';
 
 type FieldType = {
   username?: string;
@@ -10,7 +14,10 @@ type FieldType = {
   remember?: string;
 };
 
-const login = () => {
+const Login: React.FC = () => {
+  const router = useRouter();
+  // @ts-ignore
+  const [{}, dispatch] = useStateProvider();
   const onFinish = (values) => {
     console.log('values', values);
   };
@@ -26,6 +33,24 @@ const login = () => {
     } = await signInWithPopup(firebaseAuth, provider);
     try {
       if (email) {
+        const response = await authApi.checkUser(email);
+        console.log('res', response);
+        if (!(response.data as any)?.status) {
+          dispatch({
+            type: reducerCases.SET_NEW_USER,
+            newUser: true,
+          });
+          dispatch({
+            type: reducerCases.SET_USER_INFO,
+            userInfo: {
+              name,
+              email,
+              profileImage,
+              status: '',
+            },
+          });
+          router.push('/onboarding');
+        }
       }
     } catch (err) {
       console.log(err);
@@ -92,4 +117,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

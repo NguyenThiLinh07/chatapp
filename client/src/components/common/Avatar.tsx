@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function Avatar() {
+function Avatar({ type, image, setImage }) {
   return <div>Avatar</div>;
 }
 
