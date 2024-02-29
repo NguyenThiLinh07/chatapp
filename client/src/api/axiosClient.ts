@@ -47,7 +47,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: 'http://localhost:4000/api',
+      baseURL: process.env.BASE_URL,
       headers,
     });
 
