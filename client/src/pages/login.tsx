@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { FcGoogle } from 'react-icons/fc';
 import { GoogleAuthProvider, signInWithPopup } from '@firebase/auth';
@@ -7,6 +7,7 @@ import { authApi } from '@/api/authApi';
 import { useRouter } from 'next/navigation';
 import { useStateProvider } from '@/context/StateContext';
 import { reducerCases } from '@/context/constants';
+import { IndexedObject } from '@/types/common';
 
 type FieldType = {
   username?: string;
@@ -17,7 +18,7 @@ type FieldType = {
 const Login: React.FC = () => {
   const router = useRouter();
   // @ts-ignore
-  const [{}, dispatch] = useStateProvider();
+  const [{ userInfo, newUser }, dispatch] = useStateProvider();
   const onFinish = (values) => {
     console.log('values', values);
   };
@@ -26,15 +27,18 @@ const Login: React.FC = () => {
     console.log('Failed:', errorInfo);
   };
 
+  useEffect(() => {
+    if (userInfo?.id && !newUser) return router.push('/');
+  }, [userInfo, newUser]);
+
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const {
-      user: { displayName: name, email, photoURL: profileImage },
+      user: { displayName: name, email, photoURL: image },
     } = await signInWithPopup(firebaseAuth, provider);
     try {
       if (email) {
-        const response = await authApi.checkUser(email);
-        console.log('res', response);
+        const response: IndexedObject = await authApi.checkUser(email);
         if (!(response.data as any)?.status) {
           dispatch({
             type: reducerCases.SET_NEW_USER,
@@ -45,11 +49,24 @@ const Login: React.FC = () => {
             userInfo: {
               name,
               email,
-              profileImage,
+              image,
               status: '',
             },
           });
           router.push('/onboarding');
+        } else {
+          const { id, name, email, profilePicture: image, status } = response.data.data;
+          dispatch({
+            type: reducerCases.SET_USER_INFO,
+            userInfo: {
+              id,
+              name,
+              email,
+              image,
+              status,
+            },
+          });
+          router.push('/');
         }
       }
     } catch (err) {
@@ -85,7 +102,13 @@ const Login: React.FC = () => {
             <Form.Item<FieldType>
               label="Password"
               name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password! It's all numbers",
+                  pattern: new RegExp(/^[0-9]+$/),
+                },
+              ]}
             >
               <Input.Password />
             </Form.Item>

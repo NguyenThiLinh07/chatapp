@@ -6,10 +6,17 @@ import PhotoPicker from '@/components/common/PhotoPicker';
 import PhotoLibrary from '@/components/common/PhotoLibrary';
 import CapturePhoto from '@/components/common/CapturePhoto';
 
-function Avatar({ type, image, setImage }) {
+type Props = {
+  type: 'sm' | 'lg' | 'xl';
+  image: string;
+  setImage?: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const Avatar: React.FC<Props> = (props: Props) => {
+  const { type, image, setImage } = props;
   const [hover, setHover] = useState(false);
   const [isContextMenuVisible, setIsContextMenuVisible] = useState(false);
-  const [contextMenuCordinates, setContextMenuCordinates] = useState({
+  const [contextMenuCoordinates, setContextMenuCoordinates] = useState({
     x: 0,
     y: 0,
   });
@@ -19,7 +26,7 @@ function Avatar({ type, image, setImage }) {
 
   const showContextMenu = (e) => {
     e.preventDefault();
-    setContextMenuCordinates({ x: e.pageX, y: e.pageY });
+    setContextMenuCoordinates({ x: e.pageX, y: e.pageY });
     setIsContextMenuVisible(true);
   };
 
@@ -57,7 +64,7 @@ function Avatar({ type, image, setImage }) {
     {
       name: 'Remove Photo',
       callback: () => {
-        setImage('/default_avatar.png');
+        setImage?.('/default_avatar.png');
       },
     },
   ];
@@ -72,7 +79,7 @@ function Avatar({ type, image, setImage }) {
     };
     reader.readAsDataURL(file);
     setTimeout(() => {
-      setImage(data.src);
+      setImage?.(data.src);
     }, 100);
   };
 
@@ -121,7 +128,7 @@ function Avatar({ type, image, setImage }) {
           options={contextMenuOptions}
           contextMenu={isContextMenuVisible}
           setContextMenu={setIsContextMenuVisible}
-          cordinates={contextMenuCordinates}
+          cordinates={contextMenuCoordinates}
         />
       )}
       {showCapturePhoto && (
@@ -133,6 +140,6 @@ function Avatar({ type, image, setImage }) {
       {grabPhoto && <PhotoPicker onChange={handleChangePhotoPicker} />}
     </>
   );
-}
+};
 
 export default Avatar;

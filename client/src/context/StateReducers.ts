@@ -1,6 +1,12 @@
 import { reducerCases } from '@/context/constants';
+import { TUser } from '@/types/user';
 
-export const initialState = {
+type InitialState = {
+  userInfo: TUser;
+  newUser: boolean;
+};
+
+export const initialState: InitialState = {
   userInfo: {},
   newUser: false,
 };

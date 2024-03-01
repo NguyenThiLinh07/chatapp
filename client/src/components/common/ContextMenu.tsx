@@ -5,10 +5,7 @@ function ContextMenu({ options, cordinates, contextMenu, setContextMenu }) {
 
   useEffect(() => {
     const handleClickOutSide = (e) => {
-      console.log('e.target', e.target);
-      console.log('e.target', e.target.id, e.target.class);
       if (e.target.id !== 'context-opener') {
-        console.log('contextMenuRef', contextMenuRef.current);
         if (contextMenuRef.current && !contextMenuRef.current.contains(e.target)) {
           setContextMenu(false);
         }

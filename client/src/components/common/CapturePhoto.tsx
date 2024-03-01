@@ -33,9 +33,9 @@ function CapturePhoto({ setImage, hideCapturePhoto }) {
           className="pt-2 pr-2 cursor-pointer flex items-end justify-end w-full"
           onClick={() => hideCapturePhoto(false)}
         >
-          <IoClose className="h-10 w-10 cursor-pointer" />1
+          <IoClose className="h-10 w-10 cursor-pointer" />
         </div>
-        <div className="flex justify-center w-full h-full">
+        <div className="flex justify-center w-full h-[400px]">
           <video id="video" width="400" autoPlay ref={videoRef} className="w-full"></video>
         </div>
         <button
