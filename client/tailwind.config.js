@@ -9,6 +9,8 @@ module.exports = {
       colors: {
         primary: '#ff4218',
         secondary: '#8696a0',
+        text: '#333',
+        'border-default': '#d9d9d9',
         'teal-light': '#7ae3c3',
         'photopicker-overlay-background': 'rgba(30,42,49,0.8)',
         'dropdown-background': '#233138',
@@ -32,8 +34,9 @@ module.exports = {
         main: '1fr 2.4fr',
       },
       boxShadow: {
-        'shadow8': 'rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
-      }
+        shadow0: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+        shadow8: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+      },
     },
   },
   plugins: [],
