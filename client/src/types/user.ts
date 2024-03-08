@@ -5,4 +5,5 @@ export type TUser = {
   about?: string;
   image?: string;
   status?: string;
+  profilePicture?: string;
 };

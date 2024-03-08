@@ -10,4 +10,8 @@ export const authApi = {
     const url = `/auth/onBoard-user`;
     return axiosClient.post(url, data);
   },
+  getAllContacts: () => {
+    const url = `/auth/get-contacts`;
+    return axiosClient.get(url);
+  },
 };

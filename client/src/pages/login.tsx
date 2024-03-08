@@ -34,7 +34,7 @@ const Login: React.FC = () => {
   const handleLoginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     const {
-      user: { displayName: name, email, photoURL: image },
+      user: { displayName: name, email, photoURL: profileImage },
     } = await signInWithPopup(firebaseAuth, provider);
     try {
       if (email) {
@@ -49,20 +49,20 @@ const Login: React.FC = () => {
             userInfo: {
               name,
               email,
-              image,
+              profileImage,
               status: '',
             },
           });
           router.push('/onboarding');
         } else {
-          const { id, name, email, profilePicture: image, status } = response.data.data;
+          const { id, name, email, profilePicture: profileImage, status } = response.data.data;
           dispatch({
             type: reducerCases.SET_USER_INFO,
             userInfo: {
               id,
               name,
               email,
-              image,
+              profileImage,
               status,
             },
           });

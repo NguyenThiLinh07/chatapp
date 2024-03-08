@@ -1,14 +1,23 @@
 import { reducerCases } from '@/context/constants';
 import { TUser } from '@/types/user';
+import { TMessage } from '@/types/message';
 
 type InitialState = {
   userInfo: TUser;
   newUser: boolean;
+  showContactsPage: boolean;
+  contacts: TUser[];
+  currentChatUser: TUser;
+  messages: TMessage[];
 };
 
 export const initialState: InitialState = {
-  userInfo: {},
+  userInfo: undefined,
   newUser: false,
+  showContactsPage: false,
+  contacts: [],
+  currentChatUser: undefined,
+  messages: [],
 };
 
 const reducer = (state, action) => {
@@ -22,6 +31,27 @@ const reducer = (state, action) => {
       return {
         ...state,
         newUser: action.newUser,
+      };
+    case reducerCases.SET_SHOW_CONTACTS_PAGE:
+      return {
+        ...state,
+        showContactsPage: !state.showContactsPage,
+      };
+    case reducerCases.SET_CONTACTS: {
+      return {
+        ...state,
+        contacts: action.contacts,
+      };
+    }
+    case reducerCases.CHANGE_CURRENT_USER:
+      return {
+        ...state,
+        currentChatUser: action.user,
+      };
+    case reducerCases.SET_MESSAGES:
+      return {
+        ...state,
+        messages: action.messages,
       };
     default:
       return state;
